@@ -6,11 +6,6 @@ Future<String> fetchUserData() =>
         () => throw 'Cannot locate user',
     );
 
-Future<void> getUser() async {
-    fetchUserData()
-        .then((data) => print(data))
-        .catchError((err) => print('error caught: $err'));
-}
-main() async {
-    await getUser();
-}
+Future<void> getUser() async => fetchUserData()
+    .then((data) => print(data))
+    .catchError((err) => print('error caught: $err'));
