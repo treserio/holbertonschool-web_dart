@@ -33,14 +33,12 @@ main() async {
   print(await calculateTotal());
 }
 
-Future<double> calculateTotal() async => fetchUserData()
-  .then((userData) => fetchUserOrders(jsonDecode(userData)['id'])
-    .then((orderData) async {
-      double total = 0.0;
-      for (var order in jsonDecode(orderData)) {
-        total += await fetchProductPrice(order)
-          .then((priceData) => jsonDecode(priceData));
-      }
-      return total;
-    })
-  );
+Future<double> calculateTotal() async {
+  dynamic user = jsonDecode(await fetchUserData());
+  List orders = jsonDecode(await fetchUserOrders(user['id']));
+  double total = 0.0;
+  for (String order in orders) {
+    total += jsonDecode(await fetchProductPrice(order));
+  }
+  return total;
+}
